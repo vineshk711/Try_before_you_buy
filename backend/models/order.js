@@ -1,16 +1,10 @@
-const { Mongoose } = require("mongoose");
+const mongoose = require('mongoose')
+const {ObjectId} = mongoose.Schema
 
 const orderSchema = Mongoose.Schema({
 
-    products: {
-        type: Array,
-        default: []
-    },
-    transaction_id: {
-        type: Number,
-        maxlength: 32,
-        trim: true,
-    },
+    products: [productCartSchema],
+    transaction_id: {},
     amount: {
         type: Number,
         maxlength: 32,
@@ -22,17 +16,40 @@ const orderSchema = Mongoose.Schema({
         maxlength: 2000,
     },
     status: {
-        type: Number,
-        default: 0,
-    },
-    updated: {
-        type: Number,
-        default: 0,
-    },
-    user: {
         type: String,
-        trim: true,
-        maxlength: 32,
+        default: "Recieved",
+        enum: ["Cancelled", "Delivered", "Shipped", "Processing", "Recieved"]
+    },
+    updated: Date,
+    user: {
+        type: ObjectId,
+        ref: "User"
     }
 
-})
+}, {timestamps: true})
+
+const productCartSchema = mongoose.Schema({
+    product: {
+        type: ObjectId,
+        ref: "Product"
+    },
+    name: {
+        type: String,
+        maxlength: 32,
+        trim: true
+    },
+    count: {
+        type: Number,
+        maxlength: 32,
+    },
+    price: {
+        type: Number,
+        maxlength: 32,
+        trim: true
+    }
+}, {timestamps: true})
+
+module.exports = {
+    orderCollection: mongoose.model("Order", orderSchema),
+    productCartCollection: mongoose.model("ProductCart", productCartSchema)
+}
