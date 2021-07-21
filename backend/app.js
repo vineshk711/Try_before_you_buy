@@ -10,16 +10,18 @@ const app = express()
 
 // connectng to DB
 
-// mongoose.connect(databaseURL, {
-//     useNewUrlParser: true,
-//     useCreateIndex: true,
-//     useUnifiedTopology: true
-// })
-// .then(() => {
-//     console.log('DB CONNECTED')
-// })
+mongoose.connect(databaseURL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+})
+.then(() => {
+    console.log('DB CONNECTED')
+})
+.catch( (err) => {
+    console.log(err)
+})
 
- console.log(process.env.abc)
 
 // connection the server
 
