@@ -2,6 +2,12 @@ require('dotenv').config()
 
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+
+// importing routes
+const authRoutes = require('./routes/auth')
 
 const PORT = process.env.PORT
 const databaseURL = process.env.DB_CONNECTION
@@ -9,7 +15,6 @@ const databaseURL = process.env.DB_CONNECTION
 const app = express()
 
 // connectng to DB
-
 mongoose.connect(databaseURL, {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -23,8 +28,17 @@ mongoose.connect(databaseURL, {
 })
 
 
-// connection the server
+// middlewares
+app.use(cors())
+app.use(cookieParser())
+app.use(bodyParser.json())
 
+// routes
+app.use("/api", authRoutes)
+
+
+
+// connection the server
 app.listen(PORT, () => {
     console.log(`app is listening on port ${PORT}`)
 })
