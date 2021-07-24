@@ -13,6 +13,7 @@ const orderSchema = Mongoose.Schema({
     address: {
         type: String,
         trim: true,
+
         maxlength: 2000,
     },
     status: {

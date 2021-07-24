@@ -26,7 +26,7 @@ const uuidv1 = require('uuid/v1')
     },
     encry_password: {
         type: String,
-        require: true
+        required: true
     },
     salt: String,
     role: {
