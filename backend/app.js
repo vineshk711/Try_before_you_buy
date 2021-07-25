@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 
 // importing routes
 const authRoutes = require('./routes/auth')
+const userRouters = require('./routes/user')
 
 const PORT = process.env.PORT
 const databaseURL = process.env.DB_CONNECTION
@@ -35,7 +36,7 @@ app.use(bodyParser.json())
 
 // routes
 app.use("/api", authRoutes)
-
+app.use("/api", userRouters)
 
 
 // connection the server
