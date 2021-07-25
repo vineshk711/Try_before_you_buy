@@ -17,7 +17,7 @@ exports.signup = ( req, res) => {
     user.save((err, user) => {
         if (err) {
             return res.status(400).json({
-                error: "Unable to add user into DB"
+                error: "User already exists or Unable to add user into DB"
             });
         }
         res.json({
@@ -67,7 +67,35 @@ exports.signin = ( req, res ) => {
 }
 
 exports.signout = ( req, res ) => {
+    res.clearCookie("token")
     res.json({
-        message: "Sign out route works"
+        message: "User signed out successfully!"
     })
+}
+
+
+// protected middleware
+exports.isSignedIn = expressJwt({
+    secret: process.env.SECRET,
+    userProperty: "auth"
+})
+
+// custom middlewares
+exports.isAuthenticated = (req, res, next) => {
+    let checker = req.profile && req.auth && req.profile._id == req.auth._id
+    if(!checker) {
+        return res.status(403).json({
+            error: "ACCESS DENIED"
+        })
+    }
+    next()
+}
+
+exports.isAdmin = (req, res, next) => {
+    if(req.profile.role == 0) {
+        return res.status(403).json({
+            error: "Not an ADMIN"
+        })
+    }
+    next()
 }
